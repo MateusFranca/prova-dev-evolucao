@@ -16,5 +16,7 @@ namespace BlazorApp.Models
         public string? Guarantee { get; set; }
         [Column("type")]
         public string? Type { get; set; }
+        [Column("company_id")]
+        public Guid CompanyId { get; set; }
     }
 }

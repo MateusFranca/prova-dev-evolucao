@@ -13,6 +13,13 @@ namespace BlazorApp.Context
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Service>()
+                .HasOne<Company>()
+                .WithMany(c => c.Services)
+                .HasForeignKey(s => s.CompanyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Seed Data para a tabela companies
             modelBuilder.Entity<Company>().HasData(
                 new Company
                 {

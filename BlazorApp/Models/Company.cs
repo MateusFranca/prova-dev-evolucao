@@ -11,5 +11,6 @@ namespace BlazorApp.Models
 
         [Column("cnpj")]
         public string? CNPJ { get; set; }
+        public ICollection<Service> Services { get; set; } = new List<Service>();
     }
 }
