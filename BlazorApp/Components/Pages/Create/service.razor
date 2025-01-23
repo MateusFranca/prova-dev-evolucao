@@ -23,7 +23,7 @@
 
     <div class="form-group mb-3">
         <label for="company">Empresa</label>
-        <select id="company" @bind="SelectedCompanyId" class="form-select" required>
+        <select id="company" @bind="SelectedCompanyId" class="form-select">
             <option value="" disabled selected>Selecione uma empresa</option>
             @foreach (var company in Companies)
             {
@@ -34,12 +34,14 @@
 
     <div class="form-group mb-3">
         <label for="name">Nome</label>
-        <InputText id="name" class="form-control" @bind-Value="newService.Name" required />
+        <InputText id="name" class="form-control" @bind-Value="newService.Name"/>
+        <ValidationMessage For="@(() => newService.Name)" class="text-danger" />
     </div>
 
     <div class="form-group mb-3">
         <label for="optionValue">Valor Sugerido</label>
         <InputText id="optionValue" class="form-control" @bind-Value="newService.OptionValue" />
+        <ValidationMessage For="@(() => newService.OptionValue)" class="text-danger" />
     </div>
 
     <div class="form-group mb-3">
