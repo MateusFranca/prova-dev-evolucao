@@ -43,7 +43,43 @@ namespace BlazorApp.Context
                     CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 }
             );
+
+            // Seed Data para a tabela services
+            modelBuilder.Entity<Service>().HasData(
+                new Service
+                {
+                    Id = Guid.Parse("a1e8c4b4-0b67-4fbf-8a3f-37f5b2e33dc1"),
+                    Name = "Consultoria Técnica",
+                    OptionValue = "R$ 300,00",
+                    EstimatedTime = "2 horas",
+                    Guarantee = "3 meses",
+                    Type = "Consultoria",
+                    CompanyId = Guid.Parse("d8b6a3b4-0b58-4bfb-8a3f-37f5b2e33dc1"),
+                    CreatedAt = new DateTime(2025, 1, 10, 0, 0, 0, DateTimeKind.Utc)
+                },
+                new Service
+                {
+                    Id = Guid.Parse("b2e9c5b5-1c78-5fcf-9b4f-48f6c3e44dd2"),
+                    Name = "Desenvolvimento de Software",
+                    OptionValue = "R$ 5000,00",
+                    EstimatedTime = "1 mês",
+                    Guarantee = "6 meses",
+                    Type = "Desenvolvimento",
+                    CompanyId = Guid.Parse("f3b54699-2cd2-411c-ae6e-08bfb8fbc3b5"),
+                    CreatedAt = new DateTime(2025, 1, 11, 0, 0, 0, DateTimeKind.Utc)
+                },
+                new Service
+                {
+                    Id = Guid.Parse("c3f0d6c6-2d89-4fcf-0c5f-59f7d4e55ff3"),
+                    Name = "Manutenção Predial",
+                    OptionValue = "R$ 1500,00",
+                    EstimatedTime = "3 dias",
+                    Guarantee = "1 ano",
+                    Type = "Manutenção",
+                    CompanyId = Guid.Parse("b8a8a9a7-0c5e-4f34-8b3a-5e23fbc3e67b"),
+                    CreatedAt = new DateTime(2025, 1, 12, 0, 0, 0, DateTimeKind.Utc)
+                }
+            );
         }
     }
 }
-

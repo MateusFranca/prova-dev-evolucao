@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlazorApp.Migrations
 {
     [DbContext(typeof(ContextBD))]
-    [Migration("20250123214704_CreateCompanyAndServiceTables")]
-    partial class CreateCompanyAndServiceTables
+    [Migration("20250123223900_AddCompaniesAndServices")]
+    partial class AddCompaniesAndServices
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -130,6 +130,41 @@ namespace BlazorApp.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("services");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a1e8c4b4-0b67-4fbf-8a3f-37f5b2e33dc1"),
+                            CompanyId = new Guid("d8b6a3b4-0b58-4bfb-8a3f-37f5b2e33dc1"),
+                            CreatedAt = new DateTime(2025, 1, 10, 0, 0, 0, 0, DateTimeKind.Utc),
+                            EstimatedTime = "2 horas",
+                            Guarantee = "3 meses",
+                            Name = "Consultoria Técnica",
+                            OptionValue = "R$ 300,00",
+                            Type = "Consultoria"
+                        },
+                        new
+                        {
+                            Id = new Guid("b2e9c5b5-1c78-5fcf-9b4f-48f6c3e44dd2"),
+                            CompanyId = new Guid("f3b54699-2cd2-411c-ae6e-08bfb8fbc3b5"),
+                            CreatedAt = new DateTime(2025, 1, 11, 0, 0, 0, 0, DateTimeKind.Utc),
+                            EstimatedTime = "1 mês",
+                            Guarantee = "6 meses",
+                            Name = "Desenvolvimento de Software",
+                            OptionValue = "R$ 5000,00",
+                            Type = "Desenvolvimento"
+                        },
+                        new
+                        {
+                            Id = new Guid("c3f0d6c6-2d89-4fcf-0c5f-59f7d4e55ff3"),
+                            CompanyId = new Guid("b8a8a9a7-0c5e-4f34-8b3a-5e23fbc3e67b"),
+                            CreatedAt = new DateTime(2025, 1, 12, 0, 0, 0, 0, DateTimeKind.Utc),
+                            EstimatedTime = "3 dias",
+                            Guarantee = "1 ano",
+                            Name = "Manutenção Predial",
+                            OptionValue = "R$ 1500,00",
+                            Type = "Manutenção"
+                        });
                 });
 
             modelBuilder.Entity("BlazorApp.Models.Service", b =>
