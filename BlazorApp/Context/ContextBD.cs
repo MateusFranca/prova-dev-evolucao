@@ -8,6 +8,7 @@ namespace BlazorApp.Context
     {
         public ContextBD(DbContextOptions<ContextBD> options) : base(options) { }
         public DbSet<Company> Companies { get; set; }
+        public DbSet<Service> Services { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
