@@ -1,11 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using BlazorApp.Components;
 using BlazorApp.Context;
+using BlazorApp.Services;
+using BlazorApp.Services.Imp;
+using BlazorApp.Repositories;
+using BlazorApp.Repositories.Imp;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ContextBD>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

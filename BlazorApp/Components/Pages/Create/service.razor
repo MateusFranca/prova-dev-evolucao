@@ -1,0 +1,63 @@
+@page "/create-service"
+@using BlazorApp.Services
+@using BlazorApp.Models
+@inject ICompanyService CompanyService
+@rendermode InteractiveServer
+
+@if (Companies.Any())
+{
+    <select @onchange="OnSelectedCompanyChanged" class="form-select">
+        <option value="" disabled selected>Selecione uma empresa</option>
+        @foreach (var company in Companies)
+        {
+            <option value="@company.Id">@company.Reason</option>
+        }
+    </select>
+
+    @if (SelectedCompany != null)
+    {
+        @* <p>Empresa selecionada: @SelectedCompany.Reason</p> *@
+    }
+}
+else
+{
+    <p>Carregando empresas...</p>
+}
+
+@code {
+    private List<Company> Companies = new();
+    private string? SelectedCompanyId;
+    private Company? SelectedCompany;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Companies = await CompanyService.GetCompanies();
+
+            if (!Companies.Any())
+            {
+                Console.WriteLine("Nenhuma empresa encontrada.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar empresas: {ex.Message}");
+        }
+    }
+
+    private void OnSelectedCompanyChanged(ChangeEventArgs e)
+    {
+        SelectedCompanyId = e.Value?.ToString();
+        SelectedCompany = Companies.FirstOrDefault(c => c.Id.ToString() == SelectedCompanyId);
+
+        if (SelectedCompany != null)
+        {
+            Console.WriteLine($"Empresa selecionada: {SelectedCompany.Reason}");
+        }
+        else
+        {
+            Console.WriteLine("Nenhuma empresa selecionada.");
+        }
+    }
+}
