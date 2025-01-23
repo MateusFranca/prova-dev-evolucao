@@ -16,17 +16,21 @@ namespace BlazorApp.Repositories.Imp
         public async Task<List<Service>> GetServicesAsync()
         {
             return await _context.Services
+            .Include(s => s.CompanyId)
             .Where(se => se.DeletedAt == null)
             .ToListAsync();
         }
 
         public async Task<Service?> GetServiceAsync(Guid id)
         {
-            return await _context.Services.FindAsync(id);
+            return await _context.Services
+            .Include(s => s.CompanyId)
+            .FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task AddServiceAsync(Service service)
         {
+
             service.CreatedAt = DateTime.UtcNow;
             await _context.Services.AddAsync(service);
             await _context.SaveChangesAsync();

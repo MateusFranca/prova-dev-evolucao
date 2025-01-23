@@ -15,7 +15,16 @@ namespace BlazorApp.Repositories.Imp
 
         public async Task<List<Company>> GetCompanies()
         {
-            return await _context.Companies.ToListAsync();
+            return await _context.Companies
+            .Include(c => c.Services)
+            .ToListAsync();
+        }
+
+        public async Task<Company?> GetCompanyByIdAsync(Guid id)
+        {
+            return await _context.Companies
+                .Include(c => c.Services)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

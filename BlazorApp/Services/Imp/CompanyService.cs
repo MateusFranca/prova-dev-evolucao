@@ -16,5 +16,10 @@ namespace BlazorApp.Services.Imp
         {
             return _companyRepository.GetCompanies();
         }
+
+        public Task<Company?> GetCompanyByIdAsync(Guid id)
+        {
+            return _companyRepository.GetCompanyByIdAsync(id);
+        }
     }
 }

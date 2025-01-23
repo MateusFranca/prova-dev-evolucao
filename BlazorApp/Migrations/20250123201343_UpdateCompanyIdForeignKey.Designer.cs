@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlazorApp.Migrations
 {
     [DbContext(typeof(ContextBD))]
-    [Migration("20250123195348_AddCompanyServiceRelationship")]
-    partial class AddCompanyServiceRelationship
+    [Migration("20250123201343_UpdateCompanyIdForeignKey")]
+    partial class UpdateCompanyIdForeignKey
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
