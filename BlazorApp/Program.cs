@@ -13,6 +13,8 @@ builder.Services.AddDbContext<ContextBD>(options =>
 
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
