@@ -1,6 +1,11 @@
+using Microsoft.EntityFrameworkCore;
 using BlazorApp.Components;
+using BlazorApp.Context;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ContextBD>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
