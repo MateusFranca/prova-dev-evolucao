@@ -1,0 +1,210 @@
+@page "/query-service"
+@using BlazorApp.Services
+@using BlazorApp.Models
+@inject ICompanyService CompanyService
+@inject IServiceService ServiceService
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<h3>Cadastrar Serviços</h3>
+
+<p>Cadastre um novo serviço para uma empresa selecionada e mantenha seus dados atualizados.</p>
+
+@if (services == null)
+{
+    <p>Carregando...</p>
+}
+else if (!services.Any())
+{
+    <p>Nenhum produto encontrado.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Valor Sugerido</th>
+                <th>Tempo Estimado</th>
+                <th>Garantia</th>
+                <th>Tipo</th>
+                <th>Motivo da Empresa</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var service in services)
+            {
+                <tr>
+                    <td>@service.Name</td>
+                    <td>@service.OptionValue</td>
+                    <td>@service.EstimatedTime</td>
+                    <td>@service.Guarantee</td>
+                    <td>@service.Type</td>
+                    @* <td>@companies.FirstOrDefault(c => c.Id == service.CompanyId)?.Reason ?? "Não encontrado"</td> *@
+                    <td>
+                        <button class="btn btn-primary btn-sm" @onclick="() => ShowEditModal(service)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => ShowConfirmModal(service)">Excluir</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger mt-3">
+            @errorMessage
+        </div>
+    }
+
+    <!-- Modal Editar -->
+    <div class="modal fade @modalVisible" tabindex="-1" style="display: @modalDisplay;" aria-labelledby="editUserModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserModalLabel">Editar Usuário</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if (editingService != null)
+                    {
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="name" @bind="editingService.Name" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" @bind="editingService.OptionValue" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="position" class="form-label">Posição</label>
+                            <input type="text" class="form-control" id="position" @bind="editingService.EstimatedTime" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="position" class="form-label">Estoque</label>
+                            <input type="text" class="form-control" id="position" @bind="editingService.Guarantee" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="position" class="form-label">Estoque</label>
+                            <input type="text" class="form-control" id="position" @bind="editingService.Type" />
+                        </div>
+                        @* <div class="mb-3">
+                            <label for="company" class="form-label">Empresa</label>
+                            <select id="company" class="form-select" @bind="editingService.CompanyId">
+                                <option value="" disabled selected>Selecione uma empresa</option>
+                                @foreach (var company in companies)
+                                {
+                                    <option value="@company.Id">@company.Reason</option>
+                                }
+                            </select>
+                        </div> *@
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseModal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" @onclick="SaveUser">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div class="modal fade @confirmModalVisible" tabindex="-1" style="display: @confirmModalDisplay;"
+        aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close" @onclick="CloseConfirmModal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza de que deseja excluir o usuário <strong>@selectedService?.Name</strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseConfirmModal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" @onclick="ConfirmDeleteProduct">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<BlazorApp.Models.Service> services;
+    private BlazorApp.Models.Service editingService;
+    private BlazorApp.Models.Service selectedService;
+    @* private List<BlazorApp.Models.Company> companies; *@
+    private string? errorMessage;
+    private bool isModalOpen = false;
+    private bool isConfirmModalOpen = false;
+    private string SelectedCompanyId;
+
+    private string modalVisible => isModalOpen ? "show" : "";
+    private string modalDisplay => isModalOpen ? "block" : "none";
+    private string confirmModalVisible => isConfirmModalOpen ? "show" : "";
+    private string confirmModalDisplay => isConfirmModalOpen ? "block" : "none";
+
+    protected override async Task OnInitializedAsync()
+    {
+        services = await ServiceService.GetServicesAsync();
+        @* companies = await CompanyService.GetCompanies(); *@
+    }
+
+    private void ShowEditModal(BlazorApp.Models.Service service)
+    {
+        editingService = service;
+        isModalOpen = true;
+    }
+
+    private void CloseModal()
+    {
+        editingService = null;
+        isModalOpen = false;
+    }
+
+    private void ShowConfirmModal(BlazorApp.Models.Service service)
+    {
+        selectedService = service;
+        isConfirmModalOpen = true;
+    }
+
+    private void CloseConfirmModal()
+    {
+        selectedService = null;
+        isConfirmModalOpen = false;
+    }
+
+    private async Task SaveUser()
+    {
+        try
+        {
+            await ServiceService.UpdateServiceAsync(editingService);
+            errorMessage = null;
+            editingService = null;
+            isModalOpen = false;
+            services = await ServiceService.GetServicesAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Erro ao atualizar o produto: {ex.Message}";
+        }
+    }
+
+    private async Task ConfirmDeleteProduct()
+    {
+        try
+        {
+            await ServiceService.DeleteServiceAsync(selectedService.Id);
+            errorMessage = null;
+            selectedService = null;
+            isConfirmModalOpen = false;
+            services = await ServiceService.GetServicesAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Erro ao excluir o produto: {ex.Message}";
+        }
+    }
+}
