@@ -1,0 +1,13 @@
+# Ignorar pastas bin e obj inteiras
+bin/
+obj/
+
+# Ignorar arquivos específicos em qualquer lugar do repositório
+*.dll
+*.exe
+*.pdp
+*.pdb
+*.ddl
+*.cache
+
+.fake
