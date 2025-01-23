@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlazorApp.Migrations
 {
     [DbContext(typeof(ContextBD))]
-    [Migration("20250123201343_UpdateCompanyIdForeignKey")]
-    partial class UpdateCompanyIdForeignKey
+    [Migration("20250123214704_CreateCompanyAndServiceTables")]
+    partial class CreateCompanyAndServiceTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -108,10 +108,12 @@ namespace BlazorApp.Migrations
                         .HasColumnName("guarantee");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
 
                     b.Property<string>("OptionValue")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("operation_value");
 

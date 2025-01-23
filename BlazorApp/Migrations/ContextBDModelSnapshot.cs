@@ -105,10 +105,12 @@ namespace BlazorApp.Migrations
                         .HasColumnName("guarantee");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
 
                     b.Property<string>("OptionValue")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("operation_value");
 
