@@ -16,7 +16,7 @@ namespace BlazorApp.Repositories.Imp
         public async Task<List<Service>> GetServicesAsync()
         {
             return await _context.Services
-            .Include(s => s.CompanyId)
+            // .Include(s => s.CompanyId)
             .Where(se => se.DeletedAt == null)
             .ToListAsync();
         }
@@ -24,7 +24,7 @@ namespace BlazorApp.Repositories.Imp
         public async Task<Service?> GetServiceAsync(Guid id)
         {
             return await _context.Services
-            .Include(s => s.CompanyId)
+            // .Include(s => s.CompanyId)
             .FirstOrDefaultAsync(s => s.Id == id);
         }
 
